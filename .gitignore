@@ -1,5 +1,5 @@
 *
 
-!/www/
-!/midi-files/
+!/www/**
+!/midi-files/**
 !README.md
