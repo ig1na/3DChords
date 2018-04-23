@@ -1,8 +1,6 @@
-# all files
 *
 
-# except these ones
-!www/
-!midi-files/
+!/www/
+!/midi-files/
 !.gitignore
 !README.md
