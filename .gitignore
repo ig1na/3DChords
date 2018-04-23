@@ -2,8 +2,8 @@
 *
 
 # except these ones
-!/www/*/*.js
-!/www/*/*.html
+!*/www/*/*.js
+!*/www/*/*.html
 !*/*.MID
 !.gitignore
 !README.md
