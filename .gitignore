@@ -1,5 +1,3 @@
-*
-
-!/www/**
-!/midi-files/**
-!README.md
+/*
+!/www
+!/.gitignore

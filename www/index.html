@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>My first three.js app</title>
+	<style>
+		body {margin: 0;}
+		canvas {width: 100%; height:100%;}
+	</style>
+</head>
+<body>
+	<!-- Please select a file and then hit Evaluate:
+	
+	<br/>
+	<br/>
+	<input id="file" type="file"/>
+	<br/>
+	<br/>
+	<button id="button">Evaluate -->
+
+	<form id="midi-to-py">
+		<input type="file" id="file-input"/>
+		<input type="button" id="btn" value="Send" onclick="parseMidi();"/>
+		<input type="number" id="minChord" onchange="updateNbChords();"/>
+		<input type="number" id="maxChord" onchange="updateNbChords();"/>
+	</form>
+
+	<script src="js/MidiConvert.js"></script>
+	<script src="js/three.js"></script>
+	<script src="js/threejs/examples/js/controls/TrackballControls.js"></script>
+	<script src="js/threejs/examples/js/controls/OrbitControls.js"></script>
+	<script src="js/threejs/examples/js/controls/DragControls.js"></script>
+	<script src="js/threejs/examples/js/controls/TransformControls.js"></script>
+	<script src="js/threejs/examples/js/QuickHull.js"></script>
+	<script src="js/threejs/examples/js/geometries/DecalGeometry.js"></script>
+	<script src="js/threejs/examples/js/geometries/ConvexGeometry.js"></script>
+	<script src="js/threejs/examples/js/libs/stats.min.js"></script>
+	<script src="js/min/all.js"></script>
+	<!--<script src="js/load_file.js"></script>-->
+	
+
+</body>
+</html>
