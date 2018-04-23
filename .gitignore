@@ -2,8 +2,7 @@
 *
 
 # except these ones
-!*/www/*/*.js
-!*/www/*/*.html
-!*/*.MID
+!www/
+!midi-files/
 !.gitignore
 !README.md
