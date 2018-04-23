@@ -4,8 +4,10 @@ function parseMidi() {
 	var reader = new FileReader();
 
 	reader.onload = function(e) {
-		var binary = e.target.result;
-		console.log(binary);
+		var binary = new Uint8Array(e.target.result);
+		for(var i in binary) {
+			console.log(binary[i].toString(16));
+		}
 	} 
 
 	reader.readAsArrayBuffer(file); 
