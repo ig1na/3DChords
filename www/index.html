@@ -7,6 +7,7 @@
 		body {margin: 0;}
 		canvas {width: 100%; height:100%;}
 	</style>
+	<link rel="stylesheet" type="text/css" href="js/nouislider.min.css">
 </head>
 <body>
 	<!-- Please select a file and then hit Evaluate:
@@ -21,9 +22,8 @@
 	<form id="midi-to-py">
 		<input type="file" id="file-input"/>
 		<input type="button" id="btn" value="Send" onclick="parseMidi();"/>
-		<input type="number" id="minChord" onchange="updateNbChords();"/>
-		<input type="number" id="maxChord" onchange="updateNbChords();"/>
 	</form>
+	<div id="slider" style="margin: auto; position: absolute; bottom: 0px; width: 50%; left: 0; right: 0; bottom:10%;"></div>
 
 	<script src="js/MidiConvert.js"></script>
 	<script src="js/three.js"></script>

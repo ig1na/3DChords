@@ -2,12 +2,42 @@ function parseMidi() {
 	var inputElem = document.querySelector('#file-input');
 	var file = inputElem.files[0];
 	var reader = new FileReader();
+	var chordsMap = {};
 
 	reader.onload = function(e) {
-		var binary = new Uint8Array(e.target.result);
-		for(var i in binary) {
-			console.log(binary[i].toString(16));
+		var uint8array = new Uint8Array(e.target.result);
+		var parsed = MIDIParser.Uint8(uint8array);
+
+		for(track of parsed.track) {
+
+			var deltaTime = 0;
+			for(event of track.event) {
+
+				deltaTime += event.deltaTime;
+
+				if(event.type === 9) {
+
+					if(deltaTime in chordsMap) {
+						chordsMap[deltaTime].push(event.data[0]);
+					} else {
+						chordsMap[deltaTime] = [event.data[0]];
+					}
+
+				} 
+			}
 		}
+
+		console.log(chordsMap);
+		for(var time in chordsMap) {
+			chords[time] = [new Chord(chordsMap[time])];
+		}
+
+
+		var keys = Object.keys(chords);
+		createSlider(parseInt(keys[0]), parseInt(keys[keys.length-1]));
+		console.log(chords);
+		//drawChords(lowBound, upBound);
+		
 	} 
 
 	reader.readAsArrayBuffer(file); 

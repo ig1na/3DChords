@@ -10,29 +10,29 @@ function makeLights() {
 	pointLight.position.set(x+distance, y+distance, z+distance);
 	mainGroup.add(pointLight);
 
-	var helper = new THREE.PointLightHelper(pointLight, 1);
-	mainGroup.add(helper);
+	/*var helper = new THREE.PointLightHelper(pointLight, 1);
+	mainGroup.add(helper);*/
 
 	var pointLight = new THREE.PointLight(0x00ff00, 1, 100);
 	pointLight.position.set(x+distance, y+distance, z-distance);
 	mainGroup.add(pointLight);
 
-	var helper = new THREE.PointLightHelper(pointLight, 1);
-	mainGroup.add(helper);
+	/*var helper = new THREE.PointLightHelper(pointLight, 1);
+	mainGroup.add(helper);*/
 
 	var pointLight = new THREE.PointLight(0xffff00, 1, 100);
 	pointLight.position.set(x-distance, y+distance, z+distance);
 	mainGroup.add(pointLight);
 
-	var helper = new THREE.PointLightHelper(pointLight, 1);
-	mainGroup.add(helper);
+	/*var helper = new THREE.PointLightHelper(pointLight, 1);
+	mainGroup.add(helper);*/
 
 	var pointLight = new THREE.PointLight(0x0000ff, 1, 100);
 	pointLight.position.set(x-distance, y+distance, z-distance);
 	mainGroup.add(pointLight);
 
-	var helper = new THREE.PointLightHelper(pointLight, 1);
-	mainGroup.add(helper);
+	/*var helper = new THREE.PointLightHelper(pointLight, 1);
+	mainGroup.add(helper);*/
 
 
 	//bottom lights
@@ -40,29 +40,29 @@ function makeLights() {
 	pointLight.position.set(x+distance, y-distance, z+distance);
 	mainGroup.add(pointLight);
 
-	var helper = new THREE.PointLightHelper(pointLight, 1);
-	mainGroup.add(helper);
+	/*var helper = new THREE.PointLightHelper(pointLight, 1);
+	mainGroup.add(helper);*/
 
 	var pointLight = new THREE.PointLight(0xff00ff, 1, 100);
 	pointLight.position.set(x+distance, y-distance, z-distance);
 	mainGroup.add(pointLight);
 
-	var helper = new THREE.PointLightHelper(pointLight, 1);
+	/*var helper = new THREE.PointLightHelper(pointLight, 1);
 	mainGroup.add(helper);
-
+*/
 	var pointLight = new THREE.PointLight(0xff8888, 1, 100);
 	pointLight.position.set(x-distance, y-distance, z+distance);
 	mainGroup.add(pointLight);
 
-	var helper = new THREE.PointLightHelper(pointLight, 1);
-	mainGroup.add(helper);
+	/*var helper = new THREE.PointLightHelper(pointLight, 1);
+	mainGroup.add(helper);*/
 
 	var pointLight = new THREE.PointLight(0x8888ff, 1, 100);
 	pointLight.position.set(x-distance, y-distance, z-distance);
 	mainGroup.add(pointLight);
 
-	var helper = new THREE.PointLightHelper(pointLight, 1);
-	mainGroup.add(helper);
+	/*var helper = new THREE.PointLightHelper(pointLight, 1);
+	mainGroup.add(helper);*/
 
 
 

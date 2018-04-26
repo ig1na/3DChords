@@ -1,10 +1,12 @@
 var mainGroup, shapesGroup, spheres, labels, container, camera, renderer, scene, stats;
-var chords = [];
+var chords = {};
+var notes = [];
 var mouseX = 0, mouseY = 0;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
 //var ws = new WebSocket("ws://127.0.0.1:5678/");
 var cube;
+
 
 init();
 animate();
@@ -70,13 +72,18 @@ function onWindowResize() {
 	renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function drawChords(from, to) {
-	for(var i=from; i<=to; i++) {
-		//shapesGroup.children[i].visible = true;
-		chords[i].show();
+function drawChords(low, upp) {
+	for(chord in chords) {
+		chords[chord][0].show(false);
+	}
+	for(var iTime=low; iTime<=upp; iTime++) {
+		if(iTime in chords) {
+			chords[iTime][0].show(true);
+		}
 	}
 	render();
 }
+
 
 function animate() {
 	requestAnimationFrame( animate );

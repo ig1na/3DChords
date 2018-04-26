@@ -11,15 +11,13 @@ function Chord(notes) {
 }
 
 Chord.prototype.addNote = function(note) {
-	this.notes.push(note);
+	this.notes.push(note % 12);
 }
 
-Chord.prototype.show = function() {
-	this.polyhedron.visible = true;
+Chord.prototype.show = function(bool) {
+	this.polyhedron.visible = bool;
 	for(var i in this.notes) {
-		spheres.children[this.notes[i]].visible = true;
-		console.log(i);
-		console.log(spheres[this.notes[i]]);
+		spheres.children[this.notes[i]].visible = bool;
 	}
 }
 
