@@ -58,7 +58,7 @@ function init() {
 	makeLights();
 
 	stats = new Stats();
-	container.appendChild(stats.dom);
+	//container.appendChild(stats.dom);
 	document.body.appendChild(container);
 
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -73,7 +73,8 @@ function onWindowResize() {
 }
 
 function drawChords(low, upp) {
-	for(chord in chords) {
+	//console.log(chords);
+	for(let chord in chords) {
 		chords[chord].show(false);
 	}
 	for(var iTime=low; iTime<=upp; iTime++) {

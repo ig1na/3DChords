@@ -1,7 +1,8 @@
 var transparentMaterialFront = new THREE.MeshLambertMaterial( {
 	color: 0xffffff,
 	opacity: 0.4,
-	transparent: true
+	transparent: true,
+	side: THREE.DoubleSide
 } );
 
 var transparentMaterialBack = new THREE.MeshLambertMaterial( {
