@@ -28,8 +28,13 @@ function parseMidi() {
 		}
 
 		console.log(chordsMap);
+		let prev;
 		for(var time in chordsMap) {
-			chords[time] = [new Chord(chordsMap[time])];
+			let newChord = new Chord(chordsMap[time]);
+			if(prev == null || !prev.equals(newChord))
+				chords[time] = newChord;
+			
+			prev = newChord;
 		}
 
 

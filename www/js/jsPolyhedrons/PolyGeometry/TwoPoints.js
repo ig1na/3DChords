@@ -3,7 +3,7 @@ function TwoPoints(noteVal1, noteVal2, scale) {
 	var v1 = allPoints[noteVal1].clone().multiplyScalar(scale);
 	var v2 = allPoints[noteVal2].clone().multiplyScalar(scale);
 
-	var cylinder = new THREE.CylinderGeometry(0.4, 0.4, v1.distanceTo(v2), 10, 0.5, true);
+	// var cylinder = new THREE.CylinderBufferGeometry(0.4, 0.4, v1.distanceTo(v2), 10, 0.5, true);
 
 	this.group = new THREE.Group();
 

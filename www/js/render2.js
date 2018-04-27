@@ -36,16 +36,16 @@ function init() {
 	scene.add(shapesGroup);
 	scene.add(mainGroup);
 
-	var ambientLight = new THREE.AmbientLight( 0x404040 );
+	const ambientLight = new THREE.AmbientLight( 0x404040 );
 	scene.add( ambientLight );
 
-	var pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
+	const pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
 	//camera.add(pointLight);
 	spheres = new THREE.Group();
 	labels = new THREE.Group();
 
-	for(var i in allPoints) {
-		var point = new OnePoint(i, scale);
+	for(let i in allPoints) {
+		let point = new OnePoint(i, scale);
 		point.visible = false;
 		spheres.add(point);
 
@@ -58,7 +58,7 @@ function init() {
 	makeLights();
 
 	stats = new Stats();
-	//container.appendChild(stats.dom);
+	container.appendChild(stats.dom);
 	document.body.appendChild(container);
 
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -74,11 +74,11 @@ function onWindowResize() {
 
 function drawChords(low, upp) {
 	for(chord in chords) {
-		chords[chord][0].show(false);
+		chords[chord].show(false);
 	}
 	for(var iTime=low; iTime<=upp; iTime++) {
 		if(iTime in chords) {
-			chords[iTime][0].show(true);
+			chords[iTime].show(true);
 		}
 	}
 	render();

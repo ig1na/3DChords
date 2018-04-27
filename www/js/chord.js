@@ -1,10 +1,13 @@
-var scale = 15;
+const scale = 15;
+let chordGeometry;
 
 function Chord(notes) {
 	this.notes = [];
 
 	for(var i in notes) {
-		this.notes.push(notes[i] % 12);
+		let finalNote = notes[i] % 12;
+		if(this.notes.indexOf(finalNote) == -1) 
+			this.notes.push(finalNote);
 	}
 
 	this.drawChord();
@@ -31,10 +34,10 @@ Chord.prototype.drawChord = function() {
 	} else if(nbNotes == 3) {
 		this.polyhedron = new ThreePoints(this.notes, scale);
 	}else {
-		var geometry = new THREE.Geometry();
+		chordGeometry = new THREE.Geometry();
 		
 		for(var i=0; i<nbNotes; i++) {
-			geometry.vertices.push(
+			chordGeometry.vertices.push(
 				allPoints[this.notes[i]].clone()
 			);
 		}
@@ -57,13 +60,24 @@ Chord.prototype.drawChord = function() {
 		// }
 
 		// var meshGeometry = new THREE.ConvexBufferGeometry(geometry.vertices);
-		
-		geometry.scale(scale,scale,scale);
-		this.polyhedron = new PolyMeshes(geometry, this.notes);
+		chordGeometry.scale(scale,scale,scale);
+		this.polyhedron = new PolyMeshes(chordGeometry, this.notes);
 
 	}
 	this.polyhedron.visible = false;
 	shapesGroup.add(this.polyhedron);
 	
 
+}
+
+Chord.prototype.equals = function(chord) {
+	if(this.notes.length != chord.notes.length)
+		return false;
+
+	for(let note in chord.notes) {
+		if(this.notes[note] != chord.notes[note])
+			return false;
+	}
+
+	return true;
 }
