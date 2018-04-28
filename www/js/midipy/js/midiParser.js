@@ -25,6 +25,8 @@ function parseMidi() {
 			}
 		}
 
+		//test
+
 		console.log(chordsMap);
 
 		let addedChordsMap = {};
