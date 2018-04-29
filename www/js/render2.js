@@ -1,4 +1,4 @@
-var mainGroup, shapesGroup, spheres, labels, container, camera, renderer, scene, stats;
+var mainGroup, shapesGroup, labels, container, camera, renderer, scene, stats;
 var chords = {};
 var notes = [];
 var mouseX = 0, mouseY = 0;
@@ -41,20 +41,8 @@ function init() {
 
 	const pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
 	//camera.add(pointLight);
-	spheres = new THREE.Group();
-	labels = new THREE.Group();
 
-	for(let i in allPoints) {
-		let point = new OnePoint(i, scale);
-		point.visible = false;
-		spheres.add(point);
-
-		/*var label = new makeTextSprite(i, scale);
-		labels.add(label);		*/
-	}
-	scene.add(spheres);
-	//scene.add(labels);
-
+	makeAllMeshes();
 	makeLights();
 
 	stats = new Stats();
@@ -62,6 +50,52 @@ function init() {
 	document.body.appendChild(container);
 
 	window.addEventListener( 'resize', onWindowResize, false );
+}
+
+function makeAllMeshes() {
+	spheres = new Map();
+	sticks = new Map();
+	faces = new Map();
+	labels = new THREE.Group();
+	//creates all point meshes
+	allPoints.forEach((point, i) => {
+		let sphere = new OnePoint(point, scale);
+		point.visible = false;
+		spheres.set(i,sphere);
+
+		scene.add(sphere);
+		/*var label = new makeTextSprite(i, scale);
+		labels.add(label);		*/
+	});
+	
+
+	const stickGen = subsets(allPoints, 2);
+	let stickPts;
+	while(!(stickPts = stickGen.next()).done) {
+		let stickPtsArray = Array.from(stickPts.value);
+		let p1 = stickPtsArray[0];
+		let p2 = stickPtsArray[1];
+		
+		let stick = new TwoPoints(p1, p2, scale);
+		stick.visible = false;
+		
+		sticks.set(keyFromPtSet(stickPtsArray, allPoints), stick);
+
+		scene.add(stick);
+	}
+
+	const faceGen = subsets(allPoints, 3);
+	let facePts;
+	while(!(facePts = faceGen.next()).done) {
+		let facePtsArray = Array.from(facePts.value);
+		let face = new ThreePoints(facePtsArray, scale);
+		face.visible = false;
+		faces.set(keyFromPtSet(facePtsArray, allPoints), face);
+
+		scene.add(face);
+	}
+
+	drawChords(0,100);
 }
 
 function onWindowResize() {
@@ -73,16 +107,30 @@ function onWindowResize() {
 }
 
 function drawChords(low, upp) {
-	//console.log(chords);
-	for(let chord in chords) {
-		chords[chord].show(false);
+	spheres.forEach(function(val, key) {
+		val.visible = false;
+	});
+
+	sticks.forEach(function(val, key) {
+		val.visible = false;
+	});
+
+	faces.forEach(function(val, key) {
+		val.visible = false;
+	});
+
+	for(let i=low; i<upp; i++) {
+		
 	}
-	for(var iTime=low; iTime<=upp; iTime++) {
-		if(iTime in chords) {
-			chords[iTime].show(true);
-		}
+}
+
+function keyFromPtSet(array, indexer) {
+	if(indexer !== null){
+		return array.reduce((acc, v) => acc + 1 << indexer.indexOf(v), 0);
+	} else {
+		return array.reduce((acc, v) => acc + 1 << v, 0);
 	}
-	render();
+	
 }
 
 

@@ -1,4 +1,4 @@
-function ThreePoints(notes, scale) {
+function ThreePoints(points, scale) {
 	this.group = new THREE.Group();
 
 	/*var geometry = new THREE.Geometry();
@@ -23,17 +23,15 @@ function ThreePoints(notes, scale) {
 	let positions = [];
 	let normals = [];
 	
-	for(let note in notes) {
-		positions.push(allPoints[notes[note]].clone().x);
-		positions.push(allPoints[notes[note]].clone().y);
-		positions.push(allPoints[notes[note]].clone().z);
+	for(let point of points) {
+		positions.push(point.clone().x);
+		positions.push(point.clone().y);
+		positions.push(point.clone().z);
 		normals.push(0,1,2);
 	}
 
 	geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
 	geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
-
-	geometry.computeFaceNormals();
 
 	geometry.scale(scale, scale, scale);
 
@@ -42,13 +40,13 @@ function ThreePoints(notes, scale) {
 	this.group.add(mesh);
 	//this.group.add(new PolySpheresFromNotes(notes));
 
-	const v1 = allPoints[notes[0]].clone().multiplyScalar(scale);
-	const v2 = allPoints[notes[1]].clone().multiplyScalar(scale);
-	const v3 = allPoints[notes[2]].clone().multiplyScalar(scale);
+	// const v1 = points[0].clone().multiplyScalar(scale);
+	// const v2 = points[1].clone().multiplyScalar(scale);
+	// const v3 = points[2].clone().multiplyScalar(scale);
 
-	this.group.add(new CylinderFromPts(v1, v2));
-	this.group.add(new CylinderFromPts(v2, v3));
-	this.group.add(new CylinderFromPts(v3, v1));
+	// this.group.add(new CylinderFromPts(v1, v2));
+	// this.group.add(new CylinderFromPts(v2, v3));
+	// this.group.add(new CylinderFromPts(v3, v1));
 
 	return this.group;
 }

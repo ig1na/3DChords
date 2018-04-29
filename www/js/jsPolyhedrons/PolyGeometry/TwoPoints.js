@@ -1,7 +1,7 @@
-function TwoPoints(noteVal1, noteVal2, scale) {
+function TwoPoints(point1, point2, scale) {
 
-	var v1 = allPoints[noteVal1].clone().multiplyScalar(scale);
-	var v2 = allPoints[noteVal2].clone().multiplyScalar(scale);
+	var v1 = point1.clone().multiplyScalar(scale);
+	var v2 = point2.clone().multiplyScalar(scale);
 
 	// var cylinder = new THREE.CylinderBufferGeometry(0.4, 0.4, v1.distanceTo(v2), 10, 0.5, true);
 
