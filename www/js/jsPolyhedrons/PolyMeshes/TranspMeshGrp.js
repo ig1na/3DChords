@@ -26,6 +26,24 @@ function TranspMeshGrp(geometry) {
 	return group;
 }
 
+function showPolyhedron(ptsIndexes) {
+	let vertices = [];
+	ptsIndexes.forEach(index => {
+		vertices.push(allPoints[index].clone());
+	});
+
+	let geometry = new THREE.ConvexBufferGeometry(vertices);
+
+	geometry.faces.forEach(face => {
+		console.log('face edge', face.getEdge(0).head().point);
+		let index1 = allPoints.indexOf(face.getEdge(0).head().point),
+			index2 = allPoints.indexOf(face.getEdge(1).head().point),
+			index3 = allPoints.indexOf(face.getEdge(2).head().point);
+		showThreePoints([index1, index2, index3]);
+	});
+
+}
+
 /*function makeTransparent(geometry, group) {
 	//geometry.computeVertexNormals();
 	//geometry.computeFaceNormals();

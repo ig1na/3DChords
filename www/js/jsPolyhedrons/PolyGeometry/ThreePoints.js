@@ -50,3 +50,16 @@ function ThreePoints(points, scale) {
 
 	return this.group;
 }
+
+function showThreePoints(ptsIndexes) {
+	console.log(ptsIndexes);
+	ptsIndexes.forEach(index => {
+		showOnePoint(index);
+	});
+
+	sticks.get(keyFromPtSet([ptsIndexes[0], ptsIndexes[1]])).visible = true;
+	sticks.get(keyFromPtSet([ptsIndexes[1], ptsIndexes[2]])).visible = true;
+	sticks.get(keyFromPtSet([ptsIndexes[2], ptsIndexes[0]])).visible = true;
+
+	faces.set(keyFromPtSet(ptsIndexes)).visible = true;
+}

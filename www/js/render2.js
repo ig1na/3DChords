@@ -52,51 +52,7 @@ function init() {
 	window.addEventListener( 'resize', onWindowResize, false );
 }
 
-function makeAllMeshes() {
-	spheres = new Map();
-	sticks = new Map();
-	faces = new Map();
-	labels = new THREE.Group();
-	//creates all point meshes
-	allPoints.forEach((point, i) => {
-		let sphere = new OnePoint(point, scale);
-		point.visible = false;
-		spheres.set(i,sphere);
 
-		scene.add(sphere);
-		/*var label = new makeTextSprite(i, scale);
-		labels.add(label);		*/
-	});
-	
-
-	const stickGen = subsets(allPoints, 2);
-	let stickPts;
-	while(!(stickPts = stickGen.next()).done) {
-		let stickPtsArray = Array.from(stickPts.value);
-		let p1 = stickPtsArray[0];
-		let p2 = stickPtsArray[1];
-		
-		let stick = new TwoPoints(p1, p2, scale);
-		stick.visible = false;
-		
-		sticks.set(keyFromPtSet(stickPtsArray, allPoints), stick);
-
-		scene.add(stick);
-	}
-
-	const faceGen = subsets(allPoints, 3);
-	let facePts;
-	while(!(facePts = faceGen.next()).done) {
-		let facePtsArray = Array.from(facePts.value);
-		let face = new ThreePoints(facePtsArray, scale);
-		face.visible = false;
-		faces.set(keyFromPtSet(facePtsArray, allPoints), face);
-
-		scene.add(face);
-	}
-
-	drawChords(0,100);
-}
 
 function onWindowResize() {
 	windowHalfX = window.innerWidth / 2;
@@ -118,20 +74,26 @@ function drawChords(low, upp) {
 	faces.forEach(function(val, key) {
 		val.visible = false;
 	});
-
-	for(let i=low; i<upp; i++) {
-		
-	}
-}
-
-function keyFromPtSet(array, indexer) {
-	if(indexer !== null){
-		return array.reduce((acc, v) => acc + 1 << indexer.indexOf(v), 0);
-	} else {
-		return array.reduce((acc, v) => acc + 1 << v, 0);
-	}
 	
+	for(let i=low; i<upp; i++) {
+		if(chordsMap.has(i)) {
+			let length = chordsMap.get(i).length;
+			console.log(chordsMap.get(i));
+			if(length === 1) {
+				showOnePoint(chordsMap.get(i)[0]);
+			} else if(length === 2) {
+				showTwoPoints(chordsMap.get(i));
+
+			} else if(length === 3) {
+				showThreePoints(chordsMap.get(i));
+			} else {
+				showPolyhedron(chordsMap.get(i));
+			}
+		}
+	}
 }
+
+
 
 
 function animate() {

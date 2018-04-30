@@ -1,8 +1,10 @@
+let chordsMap = new Map();
+
 function parseMidi() {
 	const inputElem = document.querySelector('#file-input');
 	let file = inputElem.files[0];
 	let reader = new FileReader();
-	let chordsMap = {};
+
 
 	reader.onload = function(e) {
 		let uint8array = new Uint8Array(e.target.result);
@@ -20,12 +22,11 @@ function parseMidi() {
 
 					note = event.data[0] % 12;
 
-					if(deltaTime in chordsMap) {
-						chordsMap[deltaTime].push(note);
+					if(chordsMap.has(deltaTime)) {
+						chordsMap.get(deltaTime).push(note);
 					} else {
-						chordsMap[deltaTime] = [note];
+						chordsMap.set(deltaTime, [note]);
 					}
-
 				} 
 			}
 		}
@@ -82,9 +83,8 @@ function parseMidi() {
 		// console.log('nbSameChords : '+nbSameChords);
 
 
-		var keys = Object.keys(chords);
-		createSlider(parseInt(keys[0]), parseInt(keys[keys.length-1]));
-		console.log(chords);
+		var keys = Array.from(chordsMap.keys()).sort((a, b) => a - b);
+		createSlider(keys[0], keys[keys.length-1]);
 		//drawChords(lowBound, upBound);
 		
 	} 

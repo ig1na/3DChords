@@ -6,3 +6,7 @@ function OnePoint(point, scale) {
 
 	return sphereMesh;
 }
+
+function showOnePoint(index) {
+	spheres.get(index).visible = true;
+}
