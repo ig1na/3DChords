@@ -10,10 +10,11 @@ function parseMidi() {
 		let uint8array = new Uint8Array(e.target.result);
 		let parsed = MIDIParser.Uint8(uint8array);
 
-		for(track of parsed.track) {
+		/*for(track of parsed.track) {
 
 			let deltaTime = 0;
 			let note;
+			let currNotes = [];
 		
 			for(event of track.event) {
 				deltaTime += event.deltaTime;
@@ -23,13 +24,48 @@ function parseMidi() {
 					note = event.data[0] % 12;
 
 					if(chordsMap.has(deltaTime)) {
-						chordsMap.get(deltaTime).push(note);
+						if(!chordsMap.get(deltaTime).includes(note)) 
+							chordsMap.get(deltaTime).push(note);
 					} else {
 						chordsMap.set(deltaTime, [note]);
 					}
 				} 
 			}
-		}
+		}*/
+
+		let oneTrack = [];
+		
+		parsed.track.forEach(track => {
+			let currDeltaTime = 0;
+
+			track.event.forEach(event => {
+				currDeltaTime += event.deltaTime;
+
+				oneTrack.push({ 'event': event, 'time': currDeltaTime});
+			});
+		});
+
+
+		let currNotes = [];
+
+		oneTrack.sort((a,b) => a.time - b.time).forEach(oneTrEvent => {
+			let event = oneTrEvent.event;
+			let type = event.type;
+			let eventTime = oneTrEvent.time;
+
+			if(type === 9) {
+				let note = event.data[0] % 12;
+				if(!currNotes.includes(note))
+					currNotes.push(event.data[0] % 12);
+			} else if(type === 8) {
+				currNotes.splice(currNotes.indexOf(event.data[0] % 12), 1);
+			}
+
+			if(currNotes.length != 0) {
+				//console.log(currNotes);
+				chordsMap.set(eventTime, currNotes.slice());
+			}
+		});
 
 		//test
 

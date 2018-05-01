@@ -78,7 +78,7 @@ function drawChords(low, upp) {
 	for(let i=low; i<upp; i++) {
 		if(chordsMap.has(i)) {
 			let length = chordsMap.get(i).length;
-			console.log(chordsMap.get(i));
+			//console.log(chordsMap.get(i));
 			if(length === 1) {
 				showOnePoint(chordsMap.get(i)[0]);
 			} else if(length === 2) {

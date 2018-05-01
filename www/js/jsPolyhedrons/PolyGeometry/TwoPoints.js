@@ -27,7 +27,7 @@ function TwoPoints(point1, point2, scale) {
 function showTwoPoints(indexes) {
 	showOnePoint(indexes[0]);
 	showOnePoint(indexes[1]);
-	console.log('sticks', sticks);
-	console.log('keyFromPtSet', keyFromPtSet(indexes));
+	//console.log('sticks', sticks);
+	//console.log('keyFromPtSet', keyFromPtSet(indexes));
 	sticks.get(keyFromPtSet(indexes)).visible = true;
 }

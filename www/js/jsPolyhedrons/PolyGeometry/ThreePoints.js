@@ -52,7 +52,7 @@ function ThreePoints(points, scale) {
 }
 
 function showThreePoints(ptsIndexes) {
-	console.log(ptsIndexes);
+	//console.log(ptsIndexes);
 	ptsIndexes.forEach(index => {
 		showOnePoint(index);
 	});
@@ -61,5 +61,5 @@ function showThreePoints(ptsIndexes) {
 	sticks.get(keyFromPtSet([ptsIndexes[1], ptsIndexes[2]])).visible = true;
 	sticks.get(keyFromPtSet([ptsIndexes[2], ptsIndexes[0]])).visible = true;
 
-	faces.set(keyFromPtSet(ptsIndexes)).visible = true;
+	faces.get(keyFromPtSet(ptsIndexes)).visible = true;
 }

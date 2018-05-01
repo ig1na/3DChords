@@ -44,6 +44,8 @@ function makeAllMeshes() {
 
 		scene.add(face);
 	}
+
+	console.log('faces', faces);
 }
 
 function keyFromPtSet(array, indexer) {
