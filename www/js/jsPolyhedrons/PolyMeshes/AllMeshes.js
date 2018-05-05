@@ -1,21 +1,46 @@
-let spheres, sticks, faces;
+import { prototype } from "module";
 
-function makeAllMeshes() {
-	spheres = new Map();
-	sticks = new Map();
-	faces = new Map();
-	labels = new THREE.Group();
-	//creates all point meshes
-	allPoints.forEach((point, i) => {
+function AllMeshes(givenScale) {
+	this.spheres = new Map();
+	this.sticks = new Map();
+	this.faces = new Map();
+	this.meshById = new Map();
+	this.labels = new THREE.Group();
+	this.meshGroup = new THREE.Group();
+
+	let scale = givenScale;
+
+	function fromPtsNumber(number) {
+		const gen = subsets(allPoints, number);
+		
+		for(let subset of gen) {
+			let subArray = Array.from(subset);
+
+			try {
+				let mesh = new MeshFromPtsArray(subArray, scale);
+				mesh.visible = false;
+
+				this.meshById.set(keyFromPtArray(subArray, allPoints), mesh);
+
+				this.meshGroup.add(mesh);
+			} catch(err) {
+				console.log(err);
+			}
+		}
+	}
+
+	fromPtsNumber.call(this,1);
+	fromPtsNumber.call(this,2);
+	fromPtsNumber.call(this,3);
+
+		//creates all point meshes
+	/*allPoints.forEach((point, i) => {
 		let sphere = new OnePoint(point, scale);
 		sphere.visible = false;
 		spheres.set(i,sphere);
 
 		scene.add(sphere);
-		/*var label = new makeTextSprite(i, scale);
-		labels.add(label);		*/
 	});
-	
 
 	const stickGen = subsets(allPoints, 2);
 	let stickPts;
@@ -43,12 +68,17 @@ function makeAllMeshes() {
 		faces.set(keyFromPtSet(facePtsArray, allPoints), face);
 
 		scene.add(face);
-	}
-
-	console.log('faces', faces);
+	}*/
 }
 
-function keyFromPtSet(array, indexer) {
+AllMeshes.prototype.showFromPtsArray = function(ptsArray, value) {
+	let key = keyFromPtArray(ptsArray, allPoints);
+	if(this.meshById.has(key)) {
+		this.meshById.get(key).visible = value;
+	}
+}
+
+function keyFromPtArray(array, indexer) {
     let sorted = array.sort((a, b) => a - b);
 
 	if(indexer != null){

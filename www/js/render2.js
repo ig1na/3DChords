@@ -1,18 +1,21 @@
-var mainGroup, shapesGroup, labels, container, camera, renderer, scene, stats;
-var chords = {};
-var notes = [];
-var mouseX = 0, mouseY = 0;
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
-//var ws = new WebSocket("ws://127.0.0.1:5678/");
-var cube;
-
-
 init();
 animate();
 
 function init() {
+	let mainGroup, allMeshes;
+	let renderer, scene, camera, orbitControls;
+	const ambientLight, pointLight, globalLights;
+	let validButton, fileInput;
+	const scale = 15;
+	let windowHalfX, windowHalfY;
+	let midiToChord = new MidiToChordMap();
+
 	container = document.createElement('div');
+	fileInput = document.getElementById('file-input');
+	validButton = document.getElementById('valid-btn');
+	validButton.onclick = function() {
+		midiToChord.parse(fileInput);
+	};
 
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 	camera.position.z = 50;
@@ -24,29 +27,30 @@ function init() {
 	//renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
-	var controls = new THREE.OrbitControls( camera, renderer.domElement );
-	controls.minDistance = 5;
-	controls.maxDistance = 200;
-	controls.maxPolarAngle = Math.PI;
+	orbitControls = new THREE.OrbitControls( camera, renderer.domElement );
+	orbitControls.minDistance = 5;
+	orbitControls.maxDistance = 200;
+	orbitControls.maxPolarAngle = Math.PI;
 
-	container.appendChild( renderer.domElement );
-
-	mainGroup = new THREE.Group();
-	shapesGroup = new THREE.Group();
-	scene.add(shapesGroup);
-	scene.add(mainGroup);
-
-	const ambientLight = new THREE.AmbientLight( 0x404040 );
+	ambientLight = new THREE.AmbientLight( 0x404040 );
 	scene.add( ambientLight );
 
-	const pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
-	//camera.add(pointLight);
+	pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
+	camera.add(pointLight);
 
-	makeAllMeshes();
-	makeLights();
+	mainGroup = new THREE.Group();
+	scene.add(mainGroup);
+
+	globalLights = new GlobalLights();
+	mainGroup.add(globalLights);
+
+	allMeshes = new allMeshes(scale);
+	mainGroup.add(allMeshes.meshGroup);
+	
 
 	stats = new Stats();
 	//container.appendChild(stats.dom);
+	container.appendChild( renderer.domElement );
 	document.body.appendChild(container);
 
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -63,34 +67,7 @@ function onWindowResize() {
 }
 
 function drawChords(low, upp) {
-	spheres.forEach(function(val, key) {
-		val.visible = false;
-	});
-
-	sticks.forEach(function(val, key) {
-		val.visible = false;
-	});
-
-	faces.forEach(function(val, key) {
-		val.visible = false;
-	});
 	
-	for(let i=low; i<upp; i++) {
-		if(chordsMap.has(i)) {
-			let length = chordsMap.get(i).length;
-			//console.log(chordsMap.get(i));
-			if(length === 1) {
-				showOnePoint(chordsMap.get(i)[0]);
-			} else if(length === 2) {
-				showTwoPoints(chordsMap.get(i));
-
-			} else if(length === 3) {
-				showThreePoints(chordsMap.get(i));
-			} else {
-				showPolyhedron(chordsMap.get(i));
-			}
-		}
-	}
 }
 
 

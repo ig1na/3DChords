@@ -1,40 +1,25 @@
-let chordsMap = new Map();
-
-function parseMidi() {
-	const inputElem = document.querySelector('#file-input');
-	let file = inputElem.files[0];
+function MidiToChordMap() {
 	let reader = new FileReader();
+	this.chordsMap = new Map();
+}
 
+MidiToChordMap.prototype.parse = function(domFileInput) {
+	const file = domFileInput.files[0];
 
 	reader.onload = function(e) {
 		let uint8array = new Uint8Array(e.target.result);
-		let parsed = MIDIParser.Uint8(uint8array);
+		// let hexArray = [];
+		// uint8array.forEach(element => {
+		// 	hexArray.push(ConvertBase.dec2hex(element));
+		// });
+		// console.log('hexArray', hexArray);
+		let parsed = MIDIParser.parse(uint8array),
+			oneTrack = [],
+			sortedOneTrk = [],
+			currNotes = [],
+			prevTime = -1,
+			eventTime = -1;
 
-		/*for(track of parsed.track) {
-
-			let deltaTime = 0;
-			let note;
-			let currNotes = [];
-		
-			for(event of track.event) {
-				deltaTime += event.deltaTime;
-				
-				if(event.type === 9) {
-
-					note = event.data[0] % 12;
-
-					if(chordsMap.has(deltaTime)) {
-						if(!chordsMap.get(deltaTime).includes(note)) 
-							chordsMap.get(deltaTime).push(note);
-					} else {
-						chordsMap.set(deltaTime, [note]);
-					}
-				} 
-			}
-		}*/
-
-		let oneTrack = [];
-		
 		parsed.track.forEach(track => {
 			let currDeltaTime = 0;
 
@@ -45,84 +30,36 @@ function parseMidi() {
 			});
 		});
 
+		//console.log(oneTrack.sort((a,b) => a.time - b.time).sort((a,b) => a.event.type - b.event.type));
+		sortedOneTrk = oneTrack.sort((a,b) => (a.time + a.event.type) - (b.time + b.event.type));	
+		sortedOneTrk.forEach(oneTrEvent => {
+			let ev = oneTrEvent.event;
+			let type = ev.type;
 
-		let currNotes = [];
+			if(type === 9 || type === 8) {
+				let note = ev.data[0] % 12;
+				let velocity = ev.data[1];
+				eventTime = oneTrEvent.time;
 
-		oneTrack.sort((a,b) => a.time - b.time).forEach(oneTrEvent => {
-			let event = oneTrEvent.event;
-			let type = event.type;
-			let eventTime = oneTrEvent.time;
+				if(prevTime === -1)
+					prevTime = eventTime;
 
-			if(type === 9) {
-				let note = event.data[0] % 12;
-				if(!currNotes.includes(note))
-					currNotes.push(event.data[0] % 12);
-			} else if(type === 8) {
-				currNotes.splice(currNotes.indexOf(event.data[0] % 12), 1);
+				if(prevTime != eventTime && currNotes.length != 0)
+					this.chordsMap.set(eventTime, Array.from(new Set(currNotes)));
+
+				if(type === 8 || (type === 9 && velocity === 0)) {
+					currNotes.splice(currNotes.indexOf(note), 1);
+
+				} else if(type === 9 && velocity > 0) {
+					currNotes.push(note);
+				} 
 			}
-
-			if(currNotes.length != 0) {
-				//console.log(currNotes);
-				chordsMap.set(eventTime, currNotes.slice());
-			}
+			prevTime = eventTime;
 		});
 
-		//test
-
-		console.log(chordsMap);
-
-		// let addedChordsMap = {};
-
-		// Object.defineProperty(addedChordsMap, 'hasValueArray', {
-		// 	enumerable: false,
-		// 	value: function(array) {
-		// 		const keys = Object.keys(this);
-		// 		const values = Object.values(this);
-
-		// 		for(let key of keys) {
-		// 			if(JSON.stringify(this[key].sort()) === JSON.stringify(array.sort())) {
-		// 				//console.log(JSON.stringify(this[key].sort()) + '   ' + JSON.stringify(array.sort()));
-		// 				return key;
-		// 			}
-		// 		}
-			
-		// 		return -1;
-		// 	}
-		// });
-
-		// let prev;
-		// let existingChordKey;
-		// let nbChords = 0;
-		// let nbSameChords = 0;
-
-		// //for every event time in the song
-		// for(var time in chordsMap) {
-		// 	nbChords++;
-
-		// 	//if the chord has already been added for another time, don't create a new chord mesh
-		// 	//if((existingChordKey = addedChordsMap.hasValueArray(chordsMap[time])) != -1) {
-		// 		//console.log(existingChordKey);
-		// 		chords[time] = chords[existingChordKey];
-		// 		nbSameChords++;
-		// 	//} else {
-		// 		let newChord = new Chord(chordsMap[time]);
-		// 		//if(prev == null || !prev.equals(newChord))
-		// 		chords[time] = newChord;
-		// 		//addedChordsMap[time] = chordsMap[time];
-				
-		// 		//prev = newChord;
-		// 	}
-			
-		// }
-
-		// console.log('nbChords : '+nbChords);
-		// console.log('nbSameChords : '+nbSameChords);
-
-
 		var keys = Array.from(chordsMap.keys()).sort((a, b) => a - b);
+		//console.log(keys);
 		createSlider(keys[0], keys[keys.length-1]);
-		//drawChords(lowBound, upBound);
-		
 	} 
 
 	reader.readAsArrayBuffer(file); 

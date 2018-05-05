@@ -1,33 +1,54 @@
-function createSlider(from, to) {
+function Slider(domElem, allMeshes, chordsMap) {
 	const slider = document.getElementById('slider');
-	let lowBound = from;
-	let upBound = to/10;
+	let timesArray = Array.from(chordsMap.keys()).sort((a, b) => a - b);
+	let lowBound = timesArray[0];
+	let upBound = timesArray[timesArray.length - 1];
+
+	if(slider.noUiSlider != null)
+		slider.noUiSlider.destroy();
 
 	noUiSlider.create(slider, {
 		start: [ 0, 500 ],
 		connect: true,
 		tooltips: [ true, true ],
 		range: {
-			'min': from,
-			'max': to
+			'min': lowBound,
+			'max': upBound
 		},
 		format: wNumb({
 			decimals: 0
 		})
 	});
 
-	drawChords(lowBound, upBound);
-
 	slider.noUiSlider.on('update', function(values, handle) {
-		var value = values[handle];
+		let value = values[handle];
 
 		if(handle === 1) {
-			upBound = parseInt(value);
+			let up = parseInt(value);
 		} else {
-			lowBound = parseInt(value);
+			let low = parseInt(value);
 		}
 		
-		drawChords(lowBound, upBound);
+		// allMeshes.meshesById.values().forEach(function(val, key) {
+		// 	val.visible = false;
+		// });
+		
+		for(let i=lowBound; i<uppBound; i++) {
+			if(chordsMap.has(i)) {
+				let length = chordsMap.get(i).length;
+				//console.log(chordsMap.get(i));
+				if(length === 1) {
+					showOnePoint(chordsMap.get(i)[0]);
+				} else if(length === 2) {
+					showTwoPoints(chordsMap.get(i));
+	
+				} else if(length === 3) {
+					showThreePoints(chordsMap.get(i));
+				} else {
+					showPolyhedron(chordsMap.get(i));
+				}
+			}
+		}
 	});
 
 

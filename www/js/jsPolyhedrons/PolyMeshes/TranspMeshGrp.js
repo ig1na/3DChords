@@ -28,27 +28,37 @@ function TranspMeshGrp(geometry) {
 
 function showPolyhedron(ptsIndexes) {
 	//console.log(ptsIndexes);
-	let vertices = [];
-	ptsIndexes.forEach(index => {
-		vertices.push(allPoints[index].clone());
-	});
-	// console.log('vertices', vertices);
+	// let vertices = [];
+	// ptsIndexes.forEach(index => {
+	// 	vertices.push(allPoints[index].clone());
+	// });
+	// // console.log('vertices', vertices);
 
-	let geometry = new THREE.ConvexBufferGeometry(vertices);
-	// console.log('geometry', geometry);
-	geometry.faces.forEach(face => {
-		let pt1 = face.getEdge(0).head().point,
-			pt2 = face.getEdge(1).head().point,
-			pt3 = face.getEdge(2).head().point;
-		// console.log('face', face);
-		// console.log('pt1', pt1);
-		// console.log('pt2', pt2);
-		// console.log('pt3', pt3);
-		let index1 = allPoints.map(function(e) { return e.equals(pt1) }).indexOf(true),
-			index2 = allPoints.map(function(e) { return e.equals(pt2) }).indexOf(true),
-			index3 = allPoints.map(function(e) { return e.equals(pt3) }).indexOf(true);
-		showThreePoints([index1, index2, index3]);
-	});
+	// let geometry = new THREE.ConvexBufferGeometry(vertices);
+	// // console.log('geometry', geometry);
+	// geometry.faces.forEach(face => {
+	// 	let pt1 = face.getEdge(0).head().point,
+	// 		pt2 = face.getEdge(1).head().point,
+	// 		pt3 = face.getEdge(2).head().point;
+	// 	// console.log('face', face);
+	// 	// console.log('pt1', pt1);
+	// 	// console.log('pt2', pt2);
+	// 	// console.log('pt3', pt3);
+	// 	let index1 = allPoints.map(function(e) { return e.equals(pt1) }).indexOf(true),
+	// 		index2 = allPoints.map(function(e) { return e.equals(pt2) }).indexOf(true),
+	// 		index3 = allPoints.map(function(e) { return e.equals(pt3) }).indexOf(true);
+	// 	showThreePoints([index1, index2, index3]);
+	// });
+
+	//const indexes = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ];
+
+	const gen = subsets(ptsIndexes, 3);
+	let threePts;
+
+	while(!(threePts = gen.next()).done) {
+		showThreePoints(Array.from(threePts.value));
+	}
+
 
 }
 
