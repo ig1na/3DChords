@@ -22,6 +22,8 @@ function Slider(domElem, allMeshes, chordsMap) {
 		})
 	});
 
+	console.log(chordsMap);
+
 	slider.noUiSlider.on('update', function(values, handle) {
 		let value = values[handle];
 		if(handle === 1) {
@@ -34,17 +36,21 @@ function Slider(domElem, allMeshes, chordsMap) {
 		// 	val.visible = false;
 		// });
 		
-		for(let i=lowBound; i<upBound; i++) {
-			if(i>=low && i<=up) {
+		/*for(let i=lowBound; i<upBound; i++) {
+			//if(i>=low && i<=up) {
 				if(chordsMap.has(i)) {				
 					allMeshes.showFromPtsArray(chordsMap.get(i), true);
 				}
-			} else {
-				if(chordsMap.has(i)) {				
-					allMeshes.showFromPtsArray(chordsMap.get(i), false);
-				}
-			}
+			//} // else {
+			// 	if(chordsMap.has(i)) {				
+			// 		allMeshes.showFromPtsArray(chordsMap.get(i), false);
+			// 	}
+			// }
 			
+		}*/
+
+		for(let mesh of allMeshes.meshById.values()){
+			mesh.visible = true;
 		}
 	});
 
