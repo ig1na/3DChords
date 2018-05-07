@@ -6,7 +6,7 @@ function init() {
 	let validButton, fileInput;
 	let windowHalfX, windowHalfY;
 	let slider;
-	let midiToChord = new MidiToChordMap();
+	let midiToChord;
 	const ambientLight = new THREE.AmbientLight( 0x404040 ),
 		  pointLight = new THREE.PointLight( 0xff0000, 1, 100 )
 		  globalLights = new GlobalLights(20);
@@ -17,11 +17,8 @@ function init() {
 	fileInput = document.getElementById('file-input');
 	validButton = document.getElementById('valid-btn');
 	validButton.onclick = function() {
-		
+		midiToChord = new MidiToChordMap();
 		midiToChord.parse(fileInput, function() {
-			console.log('creating slider..');
-			console.log('chordsMap: ', midiToChord.chordsMap);
-			console.log('keysMap: ', midiToChord.keysMap);
 			slider = new Slider(fileInput, allMeshes, midiToChord.keysMap);
 		});
 	};
@@ -43,7 +40,6 @@ function init() {
 
 	scene.add( ambientLight );
 	camera.add(pointLight);
-	
 
 	mainGroup = new THREE.Group();
 	scene.add(mainGroup);
