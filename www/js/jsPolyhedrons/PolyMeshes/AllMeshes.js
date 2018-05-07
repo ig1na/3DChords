@@ -1,9 +1,4 @@
-import { prototype } from "module";
-
 function AllMeshes(givenScale) {
-	this.spheres = new Map();
-	this.sticks = new Map();
-	this.faces = new Map();
 	this.meshById = new Map();
 	this.labels = new THREE.Group();
 	this.meshGroup = new THREE.Group();
@@ -18,7 +13,7 @@ function AllMeshes(givenScale) {
 
 			try {
 				let mesh = new MeshFromPtsArray(subArray, scale);
-				mesh.visible = false;
+				mesh.visible = true;
 
 				this.meshById.set(keyFromPtArray(subArray, allPoints), mesh);
 
@@ -60,7 +55,7 @@ function AllMeshes(givenScale) {
 	const faceGen = subsets(allPoints, 3);
 	let facePts;
 	while(!(facePts = faceGen.next()).done) {
-        let facePtsArray = Array.from(facePts.value);
+        let facePtsArray = Array.	from(facePts.value);
 
         let face = new ThreePoints(facePtsArray, scale);
         face.visible = false;
@@ -72,10 +67,21 @@ function AllMeshes(givenScale) {
 }
 
 AllMeshes.prototype.showFromPtsArray = function(ptsArray, value) {
-	let key = keyFromPtArray(ptsArray, allPoints);
-	if(this.meshById.has(key)) {
-		this.meshById.get(key).visible = value;
+	for(let i=1; i<=3; i++){
+		let gen = subsets(ptsArray, i);
+		for(let sub of gen) {
+			let array = Array.from(sub);
+			//console.log(array);
+			let key = keyFromPtArray(array);
+			
+			if(this.meshById.has(key))
+				this.meshById.get(key).visible = value;
+		}
+		
+	
 	}
+	//console.log(this.meshById);
+	
 }
 
 function keyFromPtArray(array, indexer) {

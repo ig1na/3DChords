@@ -1,20 +1,29 @@
 init();
-animate();
 
 function init() {
 	let mainGroup, allMeshes;
 	let renderer, scene, camera, orbitControls;
-	const ambientLight, pointLight, globalLights;
 	let validButton, fileInput;
-	const scale = 15;
 	let windowHalfX, windowHalfY;
+	let slider;
 	let midiToChord = new MidiToChordMap();
+	const ambientLight = new THREE.AmbientLight( 0x404040 ),
+		  pointLight = new THREE.PointLight( 0xff0000, 1, 100 )
+		  globalLights = new GlobalLights(20);
+	const scale = 15;	
+	
+	allMeshes = new AllMeshes(scale);
 
 	container = document.createElement('div');
 	fileInput = document.getElementById('file-input');
 	validButton = document.getElementById('valid-btn');
 	validButton.onclick = function() {
-		midiToChord.parse(fileInput);
+		
+		midiToChord.parse(fileInput, function() {
+			console.log('creating slider..');
+			
+			slider = new Slider(fileInput, allMeshes, midiToChord.chordsMap);
+		});
 	};
 
 	camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
@@ -32,21 +41,14 @@ function init() {
 	orbitControls.maxDistance = 200;
 	orbitControls.maxPolarAngle = Math.PI;
 
-	ambientLight = new THREE.AmbientLight( 0x404040 );
 	scene.add( ambientLight );
-
-	pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
 	camera.add(pointLight);
+	
 
 	mainGroup = new THREE.Group();
 	scene.add(mainGroup);
-
-	globalLights = new GlobalLights();
 	mainGroup.add(globalLights);
-
-	allMeshes = new allMeshes(scale);
 	mainGroup.add(allMeshes.meshGroup);
-	
 
 	stats = new Stats();
 	//container.appendChild(stats.dom);
@@ -54,31 +56,24 @@ function init() {
 	document.body.appendChild(container);
 
 	window.addEventListener( 'resize', onWindowResize, false );
-}
 
-
-
-function onWindowResize() {
-	windowHalfX = window.innerWidth / 2;
-	windowHalfY = window.innerHeight / 2;
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-	renderer.setSize( window.innerWidth, window.innerHeight );
-}
-
-function drawChords(low, upp) {
+	function animate() {
+		requestAnimationFrame( animate );
+		render();
+		stats.update();
+	}
 	
-}
+	function render() {
+		renderer.render( scene, camera );
+	}
 
+	function onWindowResize() {
+		windowHalfX = window.innerWidth / 2;
+		windowHalfY = window.innerHeight / 2;
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize( window.innerWidth, window.innerHeight );
+	}
 
-
-
-function animate() {
-	requestAnimationFrame( animate );
-	render();
-	stats.update();
-}
-
-function render() {
-	renderer.render( scene, camera );
+	animate();	
 }

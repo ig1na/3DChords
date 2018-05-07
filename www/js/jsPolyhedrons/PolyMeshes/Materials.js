@@ -1,32 +1,32 @@
-var transparentMaterialFront = new THREE.MeshLambertMaterial( {
+const transparentMaterialFront = new THREE.MeshLambertMaterial( {
 	color: 0xffffff,
 	opacity: 0.4,
 	transparent: true,
 	side: THREE.DoubleSide
 } );
 
-var transparentMaterialBack = new THREE.MeshLambertMaterial( {
+const transparentMaterialBack = new THREE.MeshLambertMaterial( {
 	color: 0xffffff,
 	opacity: 0.4,
 	transparent: true
 } );
 
-var pointsMaterial = new THREE.PointsMaterial( {
+const pointsMaterial = new THREE.PointsMaterial( {
 	color: 0x0080ff,
 	size: 1,
 	alphaTest: 0.5
 } );
 
-var RGBMaterial = new THREE.MeshNormalMaterial( {
+const RGBMaterial = new THREE.MeshNormalMaterial( {
+	color: 0x0088ff,
+	side: THREE.DoubleSide
+});
+
+const STDMaterial = new THREE.MeshStandardMaterial( {
 	color: 0x0088ff
 });
 
-var STDMaterial = new THREE.MeshStandardMaterial( {
-	color: 0x0088ff,
-	opacity: 0.5
-});
-
-var flatShapeMaterial = new THREE.MeshPhongMaterial( {
+const flatShapeMaterial = new THREE.MeshPhongMaterial( {
 	side : THREE.DoubleSide,
 	transparent : true,
 	opacity: 0.5

@@ -8,6 +8,7 @@ function PolyMeshes(geometry, notes) {
 
 function MeshFromPtsArray(ptsArray, scale) {
 	let len = ptsArray.length;
+	
 
 	switch(len) {
 		case 1:

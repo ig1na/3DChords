@@ -3,6 +3,8 @@ function Slider(domElem, allMeshes, chordsMap) {
 	let timesArray = Array.from(chordsMap.keys()).sort((a, b) => a - b);
 	let lowBound = timesArray[0];
 	let upBound = timesArray[timesArray.length - 1];
+	let up = upBound;
+	let low = lowBound;
 
 	if(slider.noUiSlider != null)
 		slider.noUiSlider.destroy();
@@ -22,32 +24,27 @@ function Slider(domElem, allMeshes, chordsMap) {
 
 	slider.noUiSlider.on('update', function(values, handle) {
 		let value = values[handle];
-
 		if(handle === 1) {
-			let up = parseInt(value);
+			up = parseInt(value);
 		} else {
-			let low = parseInt(value);
+			low = parseInt(value);
 		}
 		
 		// allMeshes.meshesById.values().forEach(function(val, key) {
 		// 	val.visible = false;
 		// });
 		
-		for(let i=lowBound; i<uppBound; i++) {
-			if(chordsMap.has(i)) {
-				let length = chordsMap.get(i).length;
-				//console.log(chordsMap.get(i));
-				if(length === 1) {
-					showOnePoint(chordsMap.get(i)[0]);
-				} else if(length === 2) {
-					showTwoPoints(chordsMap.get(i));
-	
-				} else if(length === 3) {
-					showThreePoints(chordsMap.get(i));
-				} else {
-					showPolyhedron(chordsMap.get(i));
+		for(let i=lowBound; i<upBound; i++) {
+			if(i>=low && i<=up) {
+				if(chordsMap.has(i)) {				
+					allMeshes.showFromPtsArray(chordsMap.get(i), true);
+				}
+			} else {
+				if(chordsMap.has(i)) {				
+					allMeshes.showFromPtsArray(chordsMap.get(i), false);
 				}
 			}
+			
 		}
 	});
 

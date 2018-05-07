@@ -1,10 +1,11 @@
 function MidiToChordMap() {
-	let reader = new FileReader();
 	this.chordsMap = new Map();
 }
 
-MidiToChordMap.prototype.parse = function(domFileInput) {
+MidiToChordMap.prototype.parse = function(domFileInput, callback) {
 	const file = domFileInput.files[0];
+	let reader = new FileReader();
+	let thisObj = this;
 
 	reader.onload = function(e) {
 		let uint8array = new Uint8Array(e.target.result);
@@ -45,7 +46,7 @@ MidiToChordMap.prototype.parse = function(domFileInput) {
 					prevTime = eventTime;
 
 				if(prevTime != eventTime && currNotes.length != 0)
-					this.chordsMap.set(eventTime, Array.from(new Set(currNotes)));
+					thisObj.chordsMap.set(eventTime, Array.from(new Set(currNotes)));
 
 				if(type === 8 || (type === 9 && velocity === 0)) {
 					currNotes.splice(currNotes.indexOf(note), 1);
@@ -57,9 +58,7 @@ MidiToChordMap.prototype.parse = function(domFileInput) {
 			prevTime = eventTime;
 		});
 
-		var keys = Array.from(chordsMap.keys()).sort((a, b) => a - b);
-		//console.log(keys);
-		createSlider(keys[0], keys[keys.length-1]);
+		callback();
 	} 
 
 	reader.readAsArrayBuffer(file); 

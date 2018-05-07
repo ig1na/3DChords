@@ -25,6 +25,8 @@ function TwoPoints(point1, point2, scale) {
 }	
 
 function showTwoPoints(indexes) {
+	console.log("showTwoPoints");
+	
 	showOnePoint(indexes[0]);
 	showOnePoint(indexes[1]);
 	//console.log('sticks', sticks);

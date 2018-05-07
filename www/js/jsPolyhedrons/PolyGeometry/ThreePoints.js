@@ -1,6 +1,11 @@
 function ThreePoints(points, scale) {
 	this.group = new THREE.Group();
-
+	let material = new THREE.MeshStandardMaterial( {
+		opacity: 0.2,
+		transparent: true,
+		depthWrite: false,
+		side: THREE.DoubleSide
+	} );
 	/*var geometry = new THREE.Geometry();
 	for(var note in notes) {
 		geometry.vertices.push( allPoints[notes[note]].clone().multiplyScalar(scale) );
@@ -27,17 +32,16 @@ function ThreePoints(points, scale) {
 		positions.push(point.clone().x);
 		positions.push(point.clone().y);
 		positions.push(point.clone().z);
-		normals.push(0,1,2);
+		normals.push(1,1,1);
 	}
 
 	geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
-	geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
+	//geometry.addAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ) );
 
 	geometry.scale(scale, scale, scale);
 
-	var mesh = new THREE.Mesh(geometry, transparentMaterialFront);
-
-	this.group.add(mesh);
+	var mesh = new THREE.Mesh( geometry, material.clone() );
+	this.group.add( mesh );
 	//this.group.add(new PolySpheresFromNotes(notes));
 
 	// const v1 = points[0].clone().multiplyScalar(scale);
