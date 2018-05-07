@@ -13,7 +13,6 @@ function init() {
 	const scale = 15;	
 	
 	allMeshes = new AllMeshes(scale);
-
 	container = document.createElement('div');
 	fileInput = document.getElementById('file-input');
 	validButton = document.getElementById('valid-btn');
@@ -21,8 +20,9 @@ function init() {
 		
 		midiToChord.parse(fileInput, function() {
 			console.log('creating slider..');
-			
-			slider = new Slider(fileInput, allMeshes, midiToChord.chordsMap);
+			console.log('chordsMap: ', midiToChord.chordsMap);
+			console.log('keysMap: ', midiToChord.keysMap);
+			slider = new Slider(fileInput, allMeshes, midiToChord.keysMap);
 		});
 	};
 

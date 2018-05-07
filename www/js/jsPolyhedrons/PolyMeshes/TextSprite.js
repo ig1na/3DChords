@@ -1,32 +1,35 @@
-/*function makeTextSprite( note, scale, parameters )
+function makeTextSprite( point, scale, parameters )
 {
-	var message;
+	let message;
+	let note = allPoints.indexOf(point);
 
-	if(note == 0) {
-		message = 'C';
-	} else if(note == 1) {
-		message = 'C#';
-	} else if(note == 2) {
-		message = 'D';
-	} else if(note == 3) {
-		message = 'D#';
-	} else if(note == 4) {
-		message = 'E';
-	} else if(note == 5) {
-		message = 'F';
-	} else if(note == 6) {
-		message = 'F#';
-	} else if(note == 7) {
-		message = 'G';
-	} else if(note == 8) {
-		message = 'G#';
-	} else if(note == 9) {
-		message = 'A';
-	} else if(note == 10) {
-		message = 'A#';
-	} else {
-		message = 'B';
+	switch(note) {
+		case 0: message = 'C';
+				break;
+		case 1: message = 'C#';
+				break;
+		case 2: message = 'D';
+				break;
+		case 3: message = 'D#';
+				break;
+		case 4: message = 'E';
+				break;
+		case 5: message = 'F';
+				break;
+		case 6: message = 'F#';
+				break;
+		case 7: message = 'G';
+				break;
+		case 8: message = 'G#';
+				break;
+		case 9: message = 'A';
+				break;
+		case 10: message = 'A#';
+				break;
+		case 11: message = 'B';
+				break;
 	}
+
 
 
 	if ( parameters === undefined ) parameters = {};
@@ -49,7 +52,7 @@
 	//var spriteAlignment = parameters.hasOwnProperty("alignment") ?
 	//	parameters["alignment"] : THREE.SpriteAlignment.topLeft;
 
-	var spriteAlignment = THREE.SpriteAlignment.topLeft;
+	//var spriteAlignment = THREE.SpriteAlignment.topLeft;
 		
 
 	var canvas = document.createElement('canvas');
@@ -81,10 +84,10 @@
 	texture.needsUpdate = true;
 
 	var spriteMaterial = new THREE.SpriteMaterial( 
-		{ map: texture, useScreenCoordinates: false, alignment: spriteAlignment } );
+		{ map: texture } );
 	var sprite = new THREE.Sprite( spriteMaterial );
 	sprite.scale.set(100,50,1.0);
-	sprite.position.copy(allPoints[noteVal].clone().multiplyScalar(scale))
+	sprite.position.copy(point.clone().multiplyScalar(scale))
 	return sprite;	
 }
 
@@ -104,4 +107,4 @@ function roundRect(ctx, x, y, w, h, r)
     ctx.closePath();
     ctx.fill();
 	ctx.stroke();   
-}*/
+}

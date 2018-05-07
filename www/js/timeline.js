@@ -6,12 +6,17 @@ function Slider(domElem, allMeshes, chordsMap) {
 	let up = upBound;
 	let low = lowBound;
 
+	console.log('chordsMap', chordsMap);
+	console.log('upBound', upBound);
+	console.log('lowBound', lowBound);
+
 	if(slider.noUiSlider != null)
 		slider.noUiSlider.destroy();
 
 	noUiSlider.create(slider, {
 		start: [ 0, 500 ],
 		connect: true,
+		step: 1,
 		tooltips: [ true, true ],
 		range: {
 			'min': lowBound,
@@ -31,27 +36,25 @@ function Slider(domElem, allMeshes, chordsMap) {
 		} else {
 			low = parseInt(value);
 		}
-		
-		// allMeshes.meshesById.values().forEach(function(val, key) {
-		// 	val.visible = false;
-		// });
-		
-		/*for(let i=lowBound; i<upBound; i++) {
-			//if(i>=low && i<=up) {
-				if(chordsMap.has(i)) {				
-					allMeshes.showFromPtsArray(chordsMap.get(i), true);
-				}
-			//} // else {
-			// 	if(chordsMap.has(i)) {				
-			// 		allMeshes.showFromPtsArray(chordsMap.get(i), false);
-			// 	}
-			// }
-			
-		}*/
 
-		for(let mesh of allMeshes.meshById.values()){
-			mesh.visible = true;
+		for(let mesh of allMeshes.meshById.values()) {
+			mesh.visible = false;
 		}
+		
+		for(let i=low; i<up; i++) {
+			if(chordsMap.has(i)) {
+				//allMeshes.showFromPtsArray(chordsMap.get(i), true);
+				let keys = chordsMap.get(i);
+				for(let key of keys) {
+					allMeshes.showFromKey(key, true);
+				}
+				
+			}
+		}
+
+		// for(let mesh of allMeshes.meshById.values()){
+		// 	mesh.visible = true;
+		// }
 	});
 
 

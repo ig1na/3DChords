@@ -1,5 +1,6 @@
 function MidiToChordMap() {
 	this.chordsMap = new Map();
+	this.keysMap = new Map();
 }
 
 MidiToChordMap.prototype.parse = function(domFileInput, callback) {
@@ -33,21 +34,37 @@ MidiToChordMap.prototype.parse = function(domFileInput, callback) {
 
 		//console.log(oneTrack.sort((a,b) => a.time - b.time).sort((a,b) => a.event.type - b.event.type));
 		sortedOneTrk = oneTrack.sort((a,b) => (a.time + a.event.type) - (b.time + b.event.type));	
+
 		sortedOneTrk.forEach(oneTrEvent => {
 			let ev = oneTrEvent.event;
 			let type = ev.type;
-
 			if(type === 9 || type === 8) {
 				let note = ev.data[0] % 12;
 				let velocity = ev.data[1];
 				eventTime = oneTrEvent.time;
-
+				
 				if(prevTime === -1)
 					prevTime = eventTime;
 
-				if(prevTime != eventTime && currNotes.length != 0)
-					thisObj.chordsMap.set(eventTime, Array.from(new Set(currNotes)));
+				if(prevTime != eventTime && currNotes.length != 0) {
+					let notesArray = Array.from(new Set(currNotes));
+					let keys = [];
 
+					for(let i=1; i<=3; i++) {
+						let gen = subsets(notesArray, i);
+						for(let sub of gen) {
+							let subArray = Array.from(sub);
+							//console.log('subArray',subArray);
+							let key = keyFromPtArray(subArray);
+							keys.push(key);
+						}
+					}
+					//let sorted = notesArray.sort((a, b) => a - b);
+
+					thisObj.chordsMap.set(eventTime, notesArray);
+					
+					thisObj.keysMap.set(eventTime, keys);
+				}
 				if(type === 8 || (type === 9 && velocity === 0)) {
 					currNotes.splice(currNotes.indexOf(note), 1);
 

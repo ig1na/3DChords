@@ -10,22 +10,14 @@ function AllMeshes(givenScale) {
 		
 		for(let subset of gen) {
 			let subArray = Array.from(subset);
+			let sorted = subArray.sort((a, b) => allPoints.indexOf(a) - allPoints.indexOf(b));
+			let key = keyFromPtArray(sorted, allPoints);
 
 			try {
 				let mesh = new MeshFromPtsArray(subArray, scale);
 				mesh.visible = false;
 
-				let key = keyFromPtArray(subArray, allPoints);
-				if(key == 4) {
-					console.log('subArray', subArray);
-					console.log('key: ',key);
-					console.log('mesh: ',mesh);	
-					for(let point of subArray) {
-						console.log('point index: ',allPoints.indexOf(point));
-					}				
-				}
-
-				this.meshById.set(keyFromPtArray(subArray, allPoints), mesh);
+				this.meshById.set(key, mesh);
 
 				this.meshGroup.add(mesh);
 			} catch(err) {
@@ -38,7 +30,9 @@ function AllMeshes(givenScale) {
 	fromPtsNumber.call(this,2);
 	fromPtsNumber.call(this,3);
 
-	console.log(this.meshById);
+	
+
+	console.log('meshById: ', this.meshById);
 
 		//creates all point meshes
 	/*allPoints.forEach((point, i) => {
@@ -85,33 +79,43 @@ AllMeshes.prototype.showFromPtsArray = function(ptsArray, value) {
 		let gen = subsets(ptsArray, i);
 		for(let sub of gen) {
 			let subArray = Array.from(sub);
-			//if(i==1) 
-			//console.log(subArray);								
-			//console.log(array);
+			
 			let key = keyFromPtArray(subArray);
-			// if(subArray.length == 1) {
-			// 	let key2 = keyFromPtArray([allPoints[subArray[0]]], allPoints);
-			// 	console.log('key: ', key);
-			// 	console.log('key2: ', key2);
-			// }
+
 			if(this.meshById.has(key)) {
 				this.meshById.get(key).visible = value;	
-				//console.log('mesh set to '+value, this.meshById.get(key));
-
 			}
 		}
 	
 	}
-	//console.log(this.meshById);
 	
 }
 
-function keyFromPtArray(array, indexer) {
-    let sorted = array.sort((a, b) => a - b);
+AllMeshes.prototype.showFromKey = function(key, value) {
+	if(this.meshById.has(key))
+		this.meshById.get(key).visible = value;
+}
 
-	if(indexer != null){
-		return array.reduce((acc, v) => acc + 1 << indexer.indexOf(v), 0);
+function keyFromPtArray(array, indexer) {
+	let key = '';
+	let index;
+	let sorted;
+	let isIndexed = (indexer != null);
+
+	if(isIndexed) {
+		sorted = array.sort((a, b) => indexer.indexOf(a) - indexer.indexOf(b));
 	} else {
-		return array.reduce((acc, v) => acc + 1 << v, 0);
+		sorted = array.sort((a, b) => a - b);
 	}
+
+	for(let point of sorted) {
+		if(isIndexed)
+			index = indexer.indexOf(point);
+		else
+			index = point;
+
+		key += '.'+String(index);
+	}
+
+	return key;
 }
