@@ -1,8 +1,13 @@
+// Creates an object with two accessible maps, one containing chords by event time, the other containing keys by event time
+// keys are made of the concatenation of notes values modulo 12
+// this object has a function that parses midi files and fill the two maps
 function MidiToChordMap() {
 	this.chordsMap = new Map();
 	this.keysMap = new Map();
 }
 
+// This prototype function will parse a midi file using midi-parser-js library, and then fill the two maps of this object
+// chords are saved for each event time, and keys too.
 MidiToChordMap.prototype.parse = function(domFileInput, callback) {
 	const file = domFileInput.files[0];
 	let reader = new FileReader();
@@ -54,8 +59,8 @@ MidiToChordMap.prototype.parse = function(domFileInput, callback) {
 						let gen = subsets(notesArray, i);
 						for(let sub of gen) {
 							let subArray = Array.from(sub);
-							//console.log('subArray',subArray);
-							let key = keyFromPtArray(subArray);
+							let key = KeyFromPtsArray(subArray);
+							
 							keys.push(key);
 						}
 					}

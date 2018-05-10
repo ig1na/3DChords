@@ -1,3 +1,4 @@
+// Creates all the global lights surounding our meshes
 function GlobalLights(distFromMid) {
 	const distance = distFromMid;
 	const lightsGroup = new THREE.Group();

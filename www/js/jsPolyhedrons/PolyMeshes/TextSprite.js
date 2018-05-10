@@ -1,12 +1,11 @@
-function makeTextSprite( point, scale )
+// Creates a sprite to display note name
+function TextSprite( point, scale )
 {
 	let map, sprite, material;
-
 	let textureLoader = new THREE.TextureLoader();
 	let note = allPoints.indexOf(point);
-	
 
-
+	// loads the image depending on the note number
 	switch(note) {
 		case 0: map = textureLoader.load('js/sprites/C.png');
 				break;
@@ -34,14 +33,12 @@ function makeTextSprite( point, scale )
 				break;
 	}
 
-	material = new THREE.SpriteMaterial( { map: map, color: 0xffffff });
+	material = new THREE.SpriteMaterial( { map: map, color: 0xffffff });	// creates a material and maps the image to it
 
-	sprite = new THREE.Sprite(material);
+	sprite = new THREE.Sprite(material);	//creates the sprite from the material
 
 	sprite.position.copy(point.clone().multiplyScalar(scale+5));
-	//sprite.position.normalize();
-	sprite.scale.set(5,5,5);
+	sprite.scale.set(5,5,5);	// scale sprite to make it bigger
 
-	//console.log(sprite);
 	return sprite;	
 }

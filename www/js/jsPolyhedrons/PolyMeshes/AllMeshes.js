@@ -1,3 +1,5 @@
+// Creates all meshes and hides them to show them when needed. This will create a group of meshes containing all spheres,
+// all cylinders and all triangular faces
 function AllMeshes(givenScale) {
 	this.meshById = new Map();
 	this.labels = new THREE.Group();
@@ -5,17 +7,19 @@ function AllMeshes(givenScale) {
 
 	let scale = givenScale;
 
+	// this internal function will create all possible meshes from the number of points it is made of, using the allPoints array
+	// as a reference for positionning and creating those meshes
+	// for example, if we want meshes with only one point, it will creates a sphere for each point in allPoints array
 	function fromPtsNumber(number) {
-		const gen = subsets(allPoints, number);
+		const gen = subsets(allPoints, number);					// creates a generator for every subset of size 'number' of allPoints array
 		
-		for(let subset of gen) {
-			let subArray = Array.from(subset);
-			let sorted = subArray.sort((a, b) => allPoints.indexOf(a) - allPoints.indexOf(b));
-			let key = keyFromPtArray(sorted, allPoints);
+		for(let subset of gen) {								// iterate through the generator
+			let subArray = Array.from(subset); 					// creates an array from the iterator
+			let key = KeyFromPtsArray(subArray, allPoints);		// creates a unique key based on the notes in the array
 
 			try {
 				let mesh = new MeshFromPtsArray(subArray, scale);
-				mesh.visible = false;
+				mesh.visible = false;							// hides the mesh 
 
 				this.meshById.set(key, mesh);
 
@@ -29,93 +33,27 @@ function AllMeshes(givenScale) {
 	fromPtsNumber.call(this,1);
 	fromPtsNumber.call(this,2);
 	fromPtsNumber.call(this,3);
-
-	
-
-	console.log('meshById: ', this.meshById);
-
-		//creates all point meshes
-	/*allPoints.forEach((point, i) => {
-		let sphere = new OnePoint(point, scale);
-		sphere.visible = false;
-		spheres.set(i,sphere);
-
-		scene.add(sphere);
-	});
-
-	const stickGen = subsets(allPoints, 2);
-	let stickPts;
-	while(!(stickPts = stickGen.next()).done) {
-		let stickPtsArray = Array.from(stickPts.value);
-		let p1 = stickPtsArray[0];
-		let p2 = stickPtsArray[1];
-		
-		let stick = new TwoPoints(p1, p2, scale);
-		stick.visible = false;
-		
-		sticks.set(keyFromPtSet(stickPtsArray, allPoints), stick);
-
-		scene.add(stick);
-	}
-
-	const faceGen = subsets(allPoints, 3);
-	let facePts;
-	while(!(facePts = faceGen.next()).done) {
-        let facePtsArray = Array.	from(facePts.value);
-
-        let face = new ThreePoints(facePtsArray, scale);
-        face.visible = false;
-        
-		faces.set(keyFromPtSet(facePtsArray, allPoints), face);
-
-		scene.add(face);
-	}*/
 }
 
+// This function will show the meshes that match the given array of notes
 AllMeshes.prototype.showFromPtsArray = function(ptsArray, value) {
 	let maxIter = ptsArray.length % 4;
-	//console.log('ptsArray', ptsArray);
+
 	for(let i=1; i<=maxIter; i++){
 		let gen = subsets(ptsArray, i);
+
 		for(let sub of gen) {
-			let subArray = Array.from(sub);
-			
-			let key = keyFromPtArray(subArray);
+			let subArray = Array.from(sub),
+				key = keyFromPtArray(subArray);
 
 			if(this.meshById.has(key)) {
 				this.meshById.get(key).visible = value;	
 			}
 		}
-	
 	}
-	
 }
 
 AllMeshes.prototype.showFromKey = function(key, value) {
 	if(this.meshById.has(key))
 		this.meshById.get(key).visible = value;
-}
-
-function keyFromPtArray(array, indexer) {
-	let key = '';
-	let index;
-	let sorted;
-	let isIndexed = (indexer != null);
-
-	if(isIndexed) {
-		sorted = array.sort((a, b) => indexer.indexOf(a) - indexer.indexOf(b));
-	} else {
-		sorted = array.sort((a, b) => a - b);
-	}
-
-	for(let point of sorted) {
-		if(isIndexed)
-			index = indexer.indexOf(point);
-		else
-			index = point;
-
-		key += '.'+String(index);
-	}
-
-	return key;
 }
