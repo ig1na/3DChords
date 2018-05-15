@@ -38,7 +38,7 @@ function TextSprite( point, scale )
 	sprite = new THREE.Sprite(material);	//creates the sprite from the material
 
 	sprite.position.copy(point.clone().multiplyScalar(scale+5));
-	sprite.scale.set(5,5,5);	// scale sprite to make it bigger
+	sprite.scale.set(5,5,9);	// scale sprite to make it bigger
 
 	return sprite;	
 }

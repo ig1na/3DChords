@@ -27,8 +27,6 @@ function Slider(domElem, allMeshes, chordsMap) {
 		})
 	});
 
-	console.log(chordsMap);
-
 	slider.noUiSlider.on('update', function(values, handle) {
 		let value = values[handle];
 		if(handle === 1) {
@@ -43,7 +41,6 @@ function Slider(domElem, allMeshes, chordsMap) {
 		
 		for(let i=low; i<up; i++) {
 			if(chordsMap.has(i)) {
-				//allMeshes.showFromPtsArray(chordsMap.get(i), true);
 				let keys = chordsMap.get(i);
 				for(let key of keys) {
 					allMeshes.showFromKey(key, true);
@@ -51,10 +48,6 @@ function Slider(domElem, allMeshes, chordsMap) {
 				
 			}
 		}
-
-		// for(let mesh of allMeshes.meshById.values()){
-		// 	mesh.visible = true;
-		// }
 	});
 
 

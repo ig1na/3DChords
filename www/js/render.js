@@ -27,7 +27,7 @@ function init() {
 	camera.position.z = 50;
 
 	scene = new THREE.Scene();
-	scene.background = new THREE.Color( 0x000000 );
+	scene.background = new THREE.Color( 0xffffff );
 
 	renderer = new THREE.WebGLRenderer();
 	renderer.setPixelRatio(window.devicePixelRatio);
