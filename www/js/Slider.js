@@ -5,6 +5,7 @@ function Slider(domElem, allMeshes, chordsMap) {
 	let upBound = timesArray[timesArray.length - 1];
 	let up = upBound;
 	let low = lowBound;
+	let keysUp, keysLow;
 
 	console.log('chordsMap', chordsMap);
 	console.log('upBound', upBound);
@@ -29,23 +30,40 @@ function Slider(domElem, allMeshes, chordsMap) {
 
 	slider.noUiSlider.on('update', function(values, handle) {
 		let value = values[handle];
-		if(handle === 1) {
-			up = parseInt(value);
-		} else {
-			low = parseInt(value);
-		}
 
 		for(let mesh of allMeshes.meshById.values()) {
 			mesh.visible = false;
 		}
-		
+
+		if(handle === 1) {
+			up = parseInt(value);
+			if(chordsMap.has(up)) 
+				keysUp = chordsMap.get(up);
+
+		} else {
+			low = parseInt(value);
+			if(chordsMap.has(low))
+				keysLow = chordsMap.get(low);
+		}
+
+		if(keysUp != undefined) {
+			for(let keyUp of keysUp) {
+				allMeshes.showFromKey(keyUp, true);
+			}
+		}
+
+		if(keysLow != undefined) {
+			for(let keyLow of keysLow) {
+				allMeshes.showFromKey(keyLow, true);
+			}
+		}
+
 		for(let i=low; i<up; i++) {
 			if(chordsMap.has(i)) {
 				let keys = chordsMap.get(i);
 				for(let key of keys) {
 					allMeshes.showFromKey(key, true);
 				}
-				
 			}
 		}
 	});

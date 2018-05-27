@@ -79,7 +79,7 @@ MidiToChordMap.prototype.parse = function(domFileInput, callback) {
 			}
 			prevTime = eventTime;
 		});
-
+		console.log(thisObj.keysMap);
 		callback();
 	} 
 
