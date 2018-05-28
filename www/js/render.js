@@ -19,7 +19,7 @@ function init() {
 	validButton.onclick = function() {
 		midiToChord = new MidiToChordMap();
 		midiToChord.parse(fileInput, function() {
-			slider = new Slider(fileInput, allMeshes, midiToChord.keysMap);
+			slider = new Slider(fileInput, allMeshes, midiToChord.finalMap);
 		});
 	};
 

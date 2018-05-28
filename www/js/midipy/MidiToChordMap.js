@@ -4,6 +4,7 @@
 function MidiToChordMap() {
 	this.chordsMap = new Map();
 	this.keysMap = new Map();
+	this.finalMap = new Map();
 }
 
 // This prototype function will parse a midi file using midi-parser-js library, and then fill the two maps of this object
@@ -79,7 +80,18 @@ MidiToChordMap.prototype.parse = function(domFileInput, callback) {
 			}
 			prevTime = eventTime;
 		});
-		console.log(thisObj.keysMap);
+
+		let keysArray = Array.from(thisObj.keysMap.keys());
+
+		for(let i=0; i<keysArray.length; i++) {
+			if(i != keysArray.length - 1) {
+				thisObj.finalMap.set([keysArray[i], keysArray[i+1]], thisObj.keysMap.get(keysArray[i]));
+			} else {
+				thisObj.finalMap.set([keysArray[i], keysArray[i] + 100], thisObj.keysMap.get(keysArray[i]));
+			}
+		}
+		console.log(thisObj.finalMap);
+
 		callback();
 	} 
 
