@@ -5,6 +5,6 @@ before_script:
   - npm install -g gulp
   - npm install gulp
   - npm install browser-sync --save-dev
-  - npm install -g gulp-concat
-  - npm install -g gulp-sourcemaps
+  - npm install gulp-concat --save-dev
+  - npm install gulp-sourcemaps --save-dev
 script: gulp
