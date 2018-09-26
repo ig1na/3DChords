@@ -2,4 +2,7 @@ language: node_js
 before_script:
   - npm install -g gulp
   - npm install gulp
+  - npm install browser-sync
+  - npm install gulp-concat
+  - npm install gulp-sourcemaps
 script: gulp
